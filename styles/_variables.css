@@ -1,0 +1,212 @@
+/* ==========================================================================
+   DESIGN SYSTEM TOKENS
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     SPACING SCALE
+     ========================================================================== */
+  --cus-spacing-xs: 0.25rem; /* 4px */
+  --cus-spacing-sm: 0.5rem; /* 8px */
+  --cus-spacing-md: 0.75rem; /* 12px */
+  --cus-spacing-lg: 1rem; /* 16px */
+  --cus-spacing-xl: 1.5rem; /* 24px */
+  --cus-spacing-2xl: 2rem; /* 32px */
+  --cus-spacing-3xl: 2.5rem; /* 40px */
+  --cus-spacing-4xl: 3rem; /* 48px */
+
+  /* ==========================================================================
+     TYPOGRAPHY SCALE
+     ========================================================================== */
+  /* Font Sizes */
+  --cus-font-size-xs: 0.75rem; /* 12px */
+  --cus-font-size-sm: 0.875rem; /* 14px */
+  --cus-font-size-base: 1rem; /* 16px */
+  --cus-font-size-lg: 1.125rem; /* 18px */
+  --cus-font-size-xl: 1.25rem; /* 20px */
+  --cus-font-size-2xl: 1.5rem; /* 24px */
+  --cus-font-size-3xl: 1.875rem; /* 30px */
+
+  /* Line Heights */
+  --cus-line-height-xs: 0.875rem; /* 14px */
+  --cus-line-height-sm: 1.125rem; /* 18px */
+  --cus-line-height-base: 1.25rem; /* 20px */
+  --cus-line-height-lg: 1.375rem; /* 22px */
+  --cus-line-height-xl: 1.5rem; /* 24px */
+  --cus-line-height-2xl: 1.75rem; /* 28px */
+  --cus-line-height-3xl: 2.25rem; /* 36px */
+
+  /* Font Weights */
+  --cus-font-weight-normal: 400;
+  --cus-font-weight-medium: 500;
+  --cus-font-weight-semibold: 600;
+  --cus-font-weight-bold: 700;
+
+  /* ==========================================================================
+     BORDER RADIUS SCALE
+     ========================================================================== */
+  --cus-radius-none: 0;
+  --cus-radius-sm: 0.25rem; /* 4px */
+  --cus-radius-md: 0.5rem; /* 8px */
+  --cus-radius-lg: 0.75rem; /* 12px */
+  --cus-radius-xl: 1rem; /* 16px */
+  --cus-radius-2xl: 1.5rem; /* 24px */
+  --cus-radius-full: 9999px;
+
+  /* ==========================================================================
+     ICON SIZE SCALE
+     ========================================================================== */
+  --cus-icon-xs: 0.75rem; /* 12px */
+  --cus-icon-sm: 1rem; /* 16px */
+  --cus-icon-md: 1.25rem; /* 20px */
+  --cus-icon-lg: 1.5rem; /* 24px */
+  --cus-icon-xl: 2rem; /* 32px */
+  --cus-icon-2xl: 2.5rem; /* 40px */
+
+  /* ==========================================================================
+     TRANSITION SCALE
+     ========================================================================== */
+  --cus-transition-fast: 0.15s ease;
+  --cus-transition-normal: 0.2s ease;
+  --cus-transition-slow: 0.3s ease;
+  --cus-transition-slower: 0.5s ease;
+
+  /* ==========================================================================
+     Z-INDEX SCALE
+     ========================================================================== */
+  /*
+   * Z-INDEX LAYER SYSTEM
+   *
+   * Cấu trúc z-index được chia thành các layers với khoảng cách 100 đơn vị
+   * để tránh xung đột và dễ dàng mở rộng trong tương lai.
+   *
+   * QUY TẮC SỬ DỤNG:
+   * 1. Luôn sử dụng CSS variables thay vì hardcode giá trị
+   * 2. Nếu cần giá trị mới, thêm vào layer phù hợp với khoảng cách +10
+   * 3. Không sử dụng giá trị > 9999 trừ trường hợp đặc biệt
+   *
+   * LAYER STRUCTURE (theo thứ tự từ thấp đến cao):
+   * - Base (1-99): Elements cơ bản trong document flow
+   * - Footer (40): Footer với relative positioning
+   * - Dropdown & Overlays (100-999): Dropdowns, popovers, tooltips - THẤP HƠN layout
+   * - Layout Components (1000-1099): Header, Bottom Nav - CAO NHẤT để luôn hiển thị
+   * - Modals (1100-1199): Modals - CAO HƠN layout để hiển thị trên header/footer
+   * - Critical Modals (1400-1499): Payment, critical flows
+   * - Notifications (1500+): Toast messages, notifications
+   */
+
+  /* Base Layer (1-99) - Elements cơ bản */
+  --cus-z-base: 1; /* Breadcrumb, carousel controls, etc. */
+  --cus-z-base-elevated: 10; /* Slightly elevated base elements */
+  --cus-z-base-high: 19; /* High base elements like search overlays */
+
+  /* Layout Components Layer (1000-1099) - Header, Footer, Bottom Navigation - CAO NHẤT để luôn hiển thị */
+  --cus-z-footer: 40; /* Footer (relative positioning, không cần cao) */
+  --cus-z-mobile-header: 1000; /* Mobile header (fixed) - cao để luôn hiển thị */
+  --cus-z-desktop-header: 1000; /* Desktop header (fixed) - cao để luôn hiển thị */
+  --cus-z-bottom-navigation: 1100; /* Bottom navigation bar (mobile, fixed) - cao hơn select (1002) */
+  --cus-z-add-cart-button: 1101; /* Add to cart button (mobile, fixed) - cao hơn bottom nav một chút */
+
+  /* Dropdown & Overlay Layer (100-999) - Dropdowns, popovers - THẤP HƠN layout để không che header/footer */
+  --cus-z-overlay-low: 100; /* Low priority overlays */
+  --cus-z-overlay-medium: 150; /* Medium priority overlays */
+  --cus-z-search-overlay: 500; /* Search suggestions overlay (absolute) - thấp hơn header */
+  --cus-z-category-overlay: 500; /* Category menu overlay (absolute) - thấp hơn header */
+  --cus-z-heroui-overlay: 800; /* HeroUI: Popover, Dropdown - thấp hơn header/bottom nav */
+  --cus-z-dropdown: 800; /* Standard dropdown menus - thấp hơn header/bottom nav */
+  --cus-z-select: 800; /* Select component dropdowns - thấp hơn bottom navigation */
+  --cus-z-select-search: 810; /* Select with search functionality */
+  --cus-z-heroui-menu: 820; /* HeroUI: Dropdown menu, Listbox - thấp hơn header/bottom nav */
+  --cus-z-datepicker: 830; /* Datepicker overlays */
+  --cus-z-password-toggle: 840; /* Password visibility toggle */
+  --cus-z-popover: 850; /* Custom popover components */
+  --cus-z-popover-advanced: 860; /* Advanced popover with positioning */
+  --cus-z-tooltip: 870; /* Custom tooltip components */
+  --cus-z-heroui-tooltip: 880; /* HeroUI: Tooltip */
+
+  /* Modal Layer (1100-1199) - Modals - CAO HƠN layout để hiển thị trên header/footer */
+  --cus-z-heroui-modal: 1100; /* HeroUI: Modal, Drawer */
+  --cus-z-modal-backdrop: 1100; /* Modal backdrop */
+  --cus-z-modal: 1110; /* Standard modals */
+  --cus-z-sidebar: 1115; /* Mobile sidebar menu and search - cao hơn header */
+  --cus-z-modal-high: 1120; /* High priority modals */
+  --cus-z-fullscreen: 1130; /* Fullscreen modals/previews */
+
+  /* Critical Modal Layer (1400-1499) - Payment, critical flows */
+  --cus-z-critical-backdrop: 1400; /* Critical modal backdrop */
+  --cus-z-critical-modal: 1410; /* Payment confirmation, critical modals */
+  --cus-z-payment: 1420; /* Payment flows */
+
+  /* Notification Layer (1500-1999) - Toast messages, notifications */
+  /* HeroUI Toast typically uses higher z-index, we place it here */
+  --cus-z-heroui-toast: 1500; /* HeroUI: Toast notifications */
+  --cus-z-toast: 1500; /* Toast notifications */
+  --cus-z-notification: 1510; /* System notifications */
+
+  /* Loading Layer (2000+) - Global loading overlay - CAO NHẤT */
+  --cus-z-loading: 2000; /* Global loading overlay - cao nhất để hiển thị trên tất cả */
+
+  /* ==========================================================================
+     COMMON UTILITY VARIABLES
+     ========================================================================== */
+
+  /* Focus ring */
+  --cus-focus-ring-width: 2px;
+  --cus-focus-ring-offset: 2px;
+  --cus-focus-ring-color: var(--color-primary);
+
+  /* Common breakpoints */
+  --cus-mobile-breakpoint: 58.75rem;
+
+  /* Common component sizes */
+  --cus-component-height-sm: 2rem; /* 32px */
+  --cus-component-height-md: 2.5rem; /* 40px */
+  --cus-component-height-lg: 3rem; /* 48px */
+
+  /* Common padding patterns */
+  --cus-padding-xs: var(--cus-spacing-xs);
+  --cus-padding-sm: var(--cus-spacing-sm);
+  --cus-padding-md: var(--cus-spacing-md);
+  --cus-padding-lg: var(--cus-spacing-lg);
+  --cus-padding-xl: var(--cus-spacing-xl);
+
+  /* Common gaps */
+  --cus-gap-xs: var(--cus-spacing-xs);
+  --cus-gap-sm: var(--cus-spacing-sm);
+  --cus-gap-md: var(--cus-spacing-md);
+  --cus-gap-lg: var(--cus-spacing-lg);
+  --cus-gap-xl: var(--cus-spacing-xl);
+
+  /* Common max widths */
+  --cus-max-width-sm: 20rem; /* 320px */
+  --cus-max-width-md: 25rem; /* 400px */
+  --cus-max-width-lg: 32rem; /* 512px */
+  --cus-max-width-xl: 40rem; /* 640px */
+
+  /* Common mobile adjustments */
+  --cus-mobile-max-width: 90vw;
+  --cus-mobile-max-height: 80vh;
+  --cus-mobile-padding: var(--cus-spacing-lg);
+
+  /* ==========================================================================
+     SHADOW TOKENS
+     ========================================================================== */
+  --cus-shadow-card1: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+  --cus-shadow-card2: 0px 2px 10px 0px rgba(0, 0, 0, 0.1);
+  --cus-shadow-card3: 0px 2px 20px 0px rgba(75, 75, 75, 0.06);
+  --cus-shadow-drop: 0px 2px 10px 0px rgba(0, 0, 0, 0.04);
+  --cus-shadow-card: 0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+  --cus-shadow-light: 0px 8px 16px 0px rgba(182, 182, 182, 0.2);
+  --cus-shadow-footer: 0px -4px 12px 0px rgba(0, 0, 0, 0.04);
+  --cus-shadow-menu: 0px 8px 16px 0px rgba(182, 182, 182, 0.5);
+  --cus-shadow-cart: 8px 0px 16px 0px rgba(182, 182, 182, 0.35);
+
+  /* ==========================================================================
+     COMPONENT SPECIFIC VARIABLES
+     ========================================================================== */
+  --cus-popover-min-width: 14.3125rem; /* 229px */
+  --cus-popover-padding: var(--cus-padding-sm);
+  --cus-popover-border-radius: var(--cus-radius-sm);
+  --cus-popover-shadow: var(--cus-shadow-card);
+  --cus-popover-z-index: var(--cus-z-popover);
+}

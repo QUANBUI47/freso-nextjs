@@ -1,0 +1,44 @@
+/* ==========================================================================
+   SCROLLBAR STYLES
+   ========================================================================== */
+
+/* Hide scrollbar but keep scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+::-webkit-scrollbar {
+  width: var(--cus-spacing-xs);
+  height: var(--cus-spacing-xs);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-neutral-40);
+  border-radius: var(--cus-radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-neutral-80);
+}
+
+/* Hide scrollbar but keep scroll functionality - mobile only */
+@media (max-width: var(--cus-mobile-breakpoint)) {
+  /* Hide all scrollbars globally on mobile */
+  * {
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  *::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+}
