@@ -36,8 +36,10 @@ export type {
 export { productCatalogService } from "./product";
 export type {
   Product,
+  Category,
   ProductListParams,
   ProductListResponse,
+  CategoryListResponse,
   ProductDetailResponse,
 } from "./product";
 

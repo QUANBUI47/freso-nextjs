@@ -4,23 +4,17 @@
  * Đọc từ environment variables
  */
 
-// Validate required environment variables
-const requiredEnvVars = [
-  "NEXT_PUBLIC_API_URL",
-  "NEXT_PUBLIC_API_VERSION",
-] as const;
-
-requiredEnvVars.forEach((varName) => {
-  if (!process.env[varName]) {
-    throw new Error(
-      `Missing required environment variable: ${varName}. Please check your .env.local file.`
-    );
-  }
-});
+// Get environment variable với fallback
+const getEnvVar = (name: string, defaultValue: string): string => {
+  return process.env[name] || defaultValue;
+};
 
 export const apiConfig = {
-  apiUrl: process.env.NEXT_PUBLIC_API_URL!,
-  apiVersion: process.env.NEXT_PUBLIC_API_VERSION!,
+  apiUrl: getEnvVar(
+    "NEXT_PUBLIC_API_URL",
+    "http://125.235.38.229:8080/freso/buyer/api"
+  ),
+  apiVersion: getEnvVar("NEXT_PUBLIC_API_VERSION", "/api/v1"),
 
   // Service endpoints - với fallback values
   userService: process.env.NEXT_PUBLIC_USER_SERVICE || "/users",
@@ -83,6 +77,10 @@ export const apiEndpoints = {
     list: () => getApiUrl(apiConfig.productCatalogService),
     detail: (id: string | number) =>
       getApiUrl(apiConfig.productCatalogService, `/${id}`),
+    hotProducts: () =>
+      `${apiConfig.apiUrl}${apiConfig.productCatalogService}/api/v1/hot-products-sellers`,
+    newProducts: () =>
+      `${apiConfig.apiUrl}${apiConfig.productCatalogService}/api/v1/new-products-sellers`,
   },
 
   // Logistics endpoints
