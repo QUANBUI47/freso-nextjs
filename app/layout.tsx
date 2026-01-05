@@ -9,6 +9,8 @@ import { siteConfig } from "@/config/site";
 import { fontDisplay, fontText } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import BannerDown from "@/components/home/banner-down/BannerDown";
+import Certificate from "@/components/home/certificate/Certificate";
 
 export const metadata: Metadata = {
   title: {
@@ -41,11 +43,20 @@ export default function RootLayout({
         )}
       >
         <Providers>
-          <div className="relative flex flex-col h-screen min-w-[1200px]">
+          <div
+            className="relative flex flex-col min-h-screen min-w-[1200px] bg-no-repeat bg-neutral-2"
+            style={{
+              backgroundSize: "100% auto",
+              backgroundImage:
+                "linear-gradient(to bottom, rgba(255,255,255,0) 70%, rgba(255,255,255,1) 100%), url(/images/background.webp)",
+            }}
+          >
             <Navbar />
-            <main className="container mx-auto max-w-7xl pt-6 pb-[120px] px-6 flex-grow">
+            <main className="container mx-auto py-6 px-6 flex-grow max-w-[1200px]">
               {children}
             </main>
+            <BannerDown />
+            <Certificate />
             <Footer />
           </div>
         </Providers>

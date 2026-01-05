@@ -15,11 +15,7 @@ export type {
 
 // Profile Service
 export { profileService } from "./profile";
-export type {
-  Profile,
-  UpdateProfileRequest,
-  ProfileResponse,
-} from "./profile";
+export type { Profile, UpdateProfileRequest, ProfileResponse } from "./profile";
 
 // Order Service
 export { orderService } from "./order";
@@ -36,9 +32,12 @@ export type {
 export { productCatalogService } from "./product";
 export type {
   Product,
-  ProductListParams,
-  ProductListResponse,
+  Category,
+  CategoryListResponse,
   ProductDetailResponse,
+  Catalog,
+  CatalogListResponse,
+  ParentCategory,
 } from "./product";
 
 // Cart Service
@@ -53,11 +52,7 @@ export type {
 
 // Payment Service
 export { paymentService } from "./payment";
-export type {
-  Payment,
-  CreatePaymentRequest,
-  PaymentResponse,
-} from "./payment";
+export type { Payment, CreatePaymentRequest, PaymentResponse } from "./payment";
 
 // Search Service
 export { searchService } from "./search";
@@ -77,4 +72,3 @@ export type {
 // Logistics Service
 export { logisticsService } from "./logistics";
 export type { TrackingInfo, TrackingResponse } from "./logistics";
-

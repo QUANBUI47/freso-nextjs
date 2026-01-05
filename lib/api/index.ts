@@ -52,9 +52,12 @@ export type {
   OrderDetailResponse,
   // Product
   Product,
-  ProductListParams,
-  ProductListResponse,
   ProductDetailResponse,
+  Catalog,
+  CatalogListResponse,
+  Category,
+  CategoryListResponse,
+  ParentCategory,
   // Cart
   Cart,
   CartItem,

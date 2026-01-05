@@ -786,6 +786,14 @@ body {
     box-shadow: var(--cus-popover-shadow) !important;
   }
 
+  .gradient-text {
+    background: linear-gradient(90deg, #f40000, #001fea, #0fa3e8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+
   /* ==========================================================================
      HEROUI Z-INDEX OVERRIDES
      Đảm bảo HeroUI components sử dụng đúng z-index từ design system

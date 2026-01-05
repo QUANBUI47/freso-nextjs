@@ -66,6 +66,7 @@ export const Footer = () => {
                     height={36}
                     loading="lazy"
                     className="w-24 h-auto object-contain"
+                    style={{ width: "auto" }}
                     src="/images/dadangky.svg"
                   />
                 </NextLink>

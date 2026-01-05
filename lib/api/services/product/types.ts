@@ -3,35 +3,95 @@
  * Request và Response types cho Product service
  */
 
+// Product Logo/Image
+export interface ProductLogo {
+  id: string;
+  fileName: string;
+  filePath: string;
+}
+
+// Product Price
+export interface ProductPrice {
+  priceFrom: number;
+  priceTo: number;
+}
+
+// Product Variant (hover)
+export interface ProductVariant {
+  variantId: string;
+  variantName: string;
+  skuVariant: string | null;
+  priceFrom: number;
+  priceTo: number;
+}
+
+// Product
 export interface Product {
-  id: string | number;
+  id: string;
   name: string;
-  description?: string;
-  price: number;
-  images?: string[];
-  categoryId?: string | number;
-  stock?: number;
-  // Add other product fields
+  logo: ProductLogo;
+  title: string;
+  parentCategory: string;
+  subCategory: string;
+  unit: string;
+  skuProduct: string;
+  defaultPrice: ProductPrice;
+  hover: ProductVariant[];
+  sortOrder?: number;
+  tagCart?: boolean;
+  hot?: boolean;
+  new?: boolean;
 }
 
-export interface ProductListParams {
-  page?: number;
-  pageSize?: number;
-  categoryId?: string | number;
-  search?: string;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
+// Category
+export interface Catalog {
+  id: string;
+  name: string;
+  banner: CatalogBanner;
+  title: string;
+  slug: string;
+  products: Product[];
 }
 
-export interface ProductListResponse {
-  data: Product[];
-  total: number;
+export interface CatalogBanner {
+  id: string;
+  fileName: string;
+  filePath: string;
+}
+// Category List Response
+export interface CatalogListResponse {
+  results: Catalog[];
+  totalPage: number;
+  totalResult: number;
   page: number;
-  pageSize: number;
-  totalPages: number;
+  perPage: number;
 }
 
+// Product Detail Response
 export interface ProductDetailResponse {
   data: Product;
 }
 
+export interface ParentCategory {
+  id: string;
+  name: string;
+  code: string;
+  icon: string;
+  slug: string;
+  categories: Category[];
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  code: string;
+  slug: string;
+}
+
+export interface CategoryListResponse {
+  results: ParentCategory[];
+  totalPage: number;
+  totalResult: number;
+  page: number;
+  perPage: number;
+}
