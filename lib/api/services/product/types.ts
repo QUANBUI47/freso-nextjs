@@ -43,47 +43,24 @@ export interface Product {
   new?: boolean;
 }
 
-// Category Banner
-export interface CategoryBanner {
-  id: string | null;
-  fileName: string | null;
-  filePath: string;
-}
-
 // Category
-export interface Category {
+export interface Catalog {
   id: string;
   name: string;
-  banner: CategoryBanner;
+  banner: CatalogBanner;
   title: string;
   slug: string;
   products: Product[];
 }
 
-// Product List Params
-export interface ProductListParams {
-  page?: number;
-  perPage?: number;
-  categoryId?: string;
-  search?: string;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
-  hot?: boolean;
-  new?: boolean;
+export interface CatalogBanner {
+  id: string;
+  fileName: string;
+  filePath: string;
 }
-
-// Product List Response
-export interface ProductListResponse {
-  results: Product[];
-  totalPage: number;
-  totalResult: number;
-  page: number;
-  perPage: number;
-}
-
 // Category List Response
-export interface CategoryListResponse {
-  results: Category[];
+export interface CatalogListResponse {
+  results: Catalog[];
   totalPage: number;
   totalResult: number;
   page: number;
@@ -93,4 +70,28 @@ export interface CategoryListResponse {
 // Product Detail Response
 export interface ProductDetailResponse {
   data: Product;
+}
+
+export interface ParentCategory {
+  id: string;
+  name: string;
+  code: string;
+  icon: string;
+  slug: string;
+  categories: Category[];
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  code: string;
+  slug: string;
+}
+
+export interface CategoryListResponse {
+  results: ParentCategory[];
+  totalPage: number;
+  totalResult: number;
+  page: number;
+  perPage: number;
 }

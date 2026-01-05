@@ -4,96 +4,44 @@ import { Input } from "@heroui/input";
 import NextLink from "next/link";
 import Image from "next/image";
 import clsx from "clsx";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Marquee from "react-fast-marquee";
 
 import { SearchIcon } from "@/components/icons";
 import { Popover, PopoverTrigger, PopoverContent } from "@heroui/popover";
+import {
+  Category,
+  ParentCategory,
+  productCatalogService,
+} from "@/lib/api/services/product";
 
 export const Navbar = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
-  const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const [parentCategories, setParentCategories] = useState<ParentCategory[]>(
+    []
+  );
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const categoryMenuRef = useRef<HTMLDivElement | null>(null);
 
-  // Mock data - thay thế bằng API call sau
-  const categories = [
-    {
-      id: 1,
-      name: "Rau củ quả",
-      icon: "/images/category.svg",
-      categories: [
-        { id: 11, name: "Rau xanh" },
-        { id: 12, name: "Củ quả" },
-        { id: 13, name: "Rau củ các loại" },
-      ],
-    },
-    {
-      id: 2,
-      name: "Trái cây",
-      icon: "/images/category.svg",
-      categories: [
-        { id: 21, name: "Trái cây tươi" },
-        { id: 22, name: "Trái cây nhập khẩu" },
-        { id: 23, name: "Trái cây sấy khô" },
-      ],
-    },
-    {
-      id: 3,
-      name: "Thịt tươi",
-      icon: "/images/category.svg",
-      categories: [
-        { id: 31, name: "Thịt heo" },
-        { id: 32, name: "Thịt bò" },
-        { id: 33, name: "Thịt gà" },
-        { id: 34, name: "Thịt các loại" },
-      ],
-    },
-    {
-      id: 4,
-      name: "Thủy hải sản tươi",
-      icon: "/images/category.svg",
-      categories: [
-        { id: 41, name: "Cá tươi" },
-        { id: 42, name: "Tôm cua" },
-        { id: 43, name: "Mực bạch tuộc" },
-        { id: 44, name: "Hải sản khác" },
-      ],
-    },
-    {
-      id: 5,
-      name: "Thực phẩm đông lạnh",
-      icon: "/images/category.svg",
-      categories: [
-        { id: 51, name: "Thịt đông lạnh" },
-        { id: 52, name: "Hải sản đông lạnh" },
-        { id: 53, name: "Rau củ đông lạnh" },
-        { id: 54, name: "Thực phẩm chế biến đông lạnh" },
-      ],
-    },
-    {
-      id: 6,
-      name: "Thực phẩm khô",
-      icon: "/images/category.svg",
-      categories: [
-        { id: 61, name: "Gạo các loại" },
-        { id: 62, name: "Ngũ cốc" },
-        { id: 63, name: "Đậu các loại" },
-        { id: 64, name: "Gia vị khô" },
-      ],
-    },
-    {
-      id: 7,
-      name: "Tiện ích bếp",
-      icon: "/images/category.svg",
-      categories: [
-        { id: 71, name: "Dụng cụ nấu ăn" },
-        { id: 72, name: "Đồ dùng nhà bếp" },
-        { id: 73, name: "Bao bì thực phẩm" },
-        { id: 74, name: "Vệ sinh bếp" },
-      ],
-    },
-  ];
-
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await productCatalogService.getCategories({
+          pageNo: 1,
+          limit: 10,
+        });
+        if (response.success && response.data) {
+          const categories = response.data.results || [];
+          setParentCategories(categories);
+        }
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+    fetchCategories();
+  }, []);
   const searchInput = (
     <Input
       aria-label="Search"
@@ -223,8 +171,25 @@ export const Navbar = () => {
               <PopoverTrigger>
                 <div
                   className="hidden md:flex items-center gap-2 cursor-pointer"
-                  onMouseEnter={() => setIsCategoryMenuOpen(true)}
-                  onMouseLeave={() => setIsCategoryMenuOpen(false)}
+                  onMouseEnter={() => {
+                    if (timeoutRef.current) {
+                      clearTimeout(timeoutRef.current);
+                      timeoutRef.current = null;
+                    }
+                    setIsCategoryMenuOpen(true);
+                  }}
+                  onMouseLeave={() => {
+                    timeoutRef.current = setTimeout(() => {
+                      setIsCategoryMenuOpen(false);
+                    }, 150);
+                  }}
+                  onFocus={() => setIsCategoryMenuOpen(true)}
+                  onBlur={() => {
+                    timeoutRef.current = setTimeout(() => {
+                      setIsCategoryMenuOpen(false);
+                    }, 150);
+                  }}
+                  tabIndex={0}
                 >
                   <Image
                     src="/images/category.svg"
@@ -236,98 +201,149 @@ export const Navbar = () => {
                 </div>
               </PopoverTrigger>
               <PopoverContent
-                className="custom-popover p-0 relative"
-                onMouseEnter={() => setIsCategoryMenuOpen(true)}
-                onMouseLeave={() => setIsCategoryMenuOpen(false)}
+                className="p-0 relative"
+                style={{ padding: "0" }}
+                onMouseEnter={() => {
+                  if (timeoutRef.current) {
+                    clearTimeout(timeoutRef.current);
+                    timeoutRef.current = null;
+                  }
+                  setIsCategoryMenuOpen(true);
+                }}
+                onMouseLeave={() => {
+                  timeoutRef.current = setTimeout(() => {
+                    setIsCategoryMenuOpen(false);
+                  }, 150);
+                }}
               >
                 <div className="flex relative">
                   {/* Main Category Menu */}
-                  <div className="w-full max-w-[14.9375rem] xl:max-w-[16.1875rem] rounded-lg">
-                    <ul className="w-full flex flex-col gap-3 py-3">
-                      {categories.map((category) => (
-                        <li
+                  <div
+                    ref={categoryMenuRef}
+                    className="rounded-lg py-3 px-2 bg-white relative flex flex-shrink-0"
+                  >
+                    <div className="flex flex-col gap-2">
+                      {parentCategories.map((category) => (
+                        <div
                           key={category.id}
                           className={clsx(
-                            "w-full py-[0.1875rem] pl-4 pr-6 hover:bg-primary-100 rounded-sm transition-colors",
+                            "flex items-center gap-3 justify-between py-2 pl-4 pr-6 rounded-sm transition-colors",
                             hoveredCategory === category.id &&
                               "bg-primary-100 text-primary"
                           )}
-                          onMouseEnter={() => setHoveredCategory(category.id)}
-                          onMouseLeave={() => setHoveredCategory(null)}
+                          onMouseEnter={() => {
+                            if (timeoutRef.current) {
+                              clearTimeout(timeoutRef.current);
+                              timeoutRef.current = null;
+                            }
+                            setHoveredCategory(category.id as string);
+                          }}
+                          onMouseLeave={() => {
+                            timeoutRef.current = setTimeout(() => {
+                              setHoveredCategory(null);
+                            }, 150);
+                          }}
                         >
                           <NextLink
                             href={`/category/${category.id}`}
-                            className="flex items-center gap-3 w-full"
+                            className="flex gap-3 items-center justify-between w-full"
                           >
-                            {category.icon && (
+                            <div className="flex gap-3">
                               <Image
                                 src={category.icon}
                                 alt={category.name}
                                 width={20}
                                 height={20}
-                                className="w-5 h-5 object-contain"
                               />
-                            )}
-                            <div className="flex items-center justify-between w-full gap-2 min-w-0">
-                              <span
+                              <div
                                 className={clsx(
-                                  "text-neutral-100 text-base font-medium line-clamp-1",
+                                  "text-base font-medium text-neutral-100",
                                   hoveredCategory === category.id &&
                                     "text-primary"
                                 )}
                               >
                                 {category.name}
-                              </span>
-                              {category.categories &&
-                                category.categories.length > 0 && (
-                                  <svg
-                                    width="12"
-                                    height="12"
-                                    viewBox="0 0 12 12"
-                                    fill="none"
-                                    className="w-3 h-3 flex-shrink-0"
-                                  >
-                                    <path
-                                      d="M4.5 9L7.5 6L4.5 3"
-                                      stroke="currentColor"
-                                      strokeWidth="1.5"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                  </svg>
-                                )}
+                              </div>
                             </div>
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              fill="none"
+                              className="w-3 h-3 flex-shrink-0"
+                            >
+                              <path
+                                d="M4.5 9L7.5 6L4.5 3"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
                           </NextLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Subcategories Menu */}
-                  {hoveredCategory &&
-                    categories.find((c) => c.id === hoveredCategory)
-                      ?.categories && (
-                      <div
-                        className="category-overlay absolute left-[calc(100%-0.125rem)] top-0 bg-white rounded-tr-lg rounded-br-lg z-50 p-2 w-[200px] h-[340px] border-l border-gray-200 shadow-lg"
-                        onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-                        onMouseLeave={() => setHoveredCategory(null)}
-                      >
-                        <div className="grid grid-cols-1 gap-y-2 max-h-full overflow-y-auto">
-                          {categories
-                            .find((c) => c.id === hoveredCategory)
-                            ?.categories?.map((subCategory) => (
-                              <NextLink
-                                key={subCategory.id}
-                                href={`/category/${hoveredCategory}/sub/${subCategory.id}`}
-                                className="flex items-center px-3 py-2 text-base text-neutral-100 font-medium hover:bg-primary-100 hover:text-primary rounded transition-colors line-clamp-1"
-                                onMouseEnter={() => setIsCategoryMenuOpen(true)}
-                              >
-                                {subCategory.name}
-                              </NextLink>
-                            ))}
                         </div>
-                      </div>
-                    )}
+                      ))}
+                    </div>
+                    {hoveredCategory &&
+                      parentCategories.find((c) => c.id === hoveredCategory)
+                        ?.categories && (
+                        <>
+                          {/* Bridge element để nối category và sub category, tránh mất hover khi di chuột */}
+                          <div
+                            className="absolute left-full inset-y-0 w-1 z-40"
+                            onMouseEnter={() => {
+                              if (timeoutRef.current) {
+                                clearTimeout(timeoutRef.current);
+                                timeoutRef.current = null;
+                              }
+                              setHoveredCategory(hoveredCategory);
+                            }}
+                            onMouseLeave={() => {
+                              timeoutRef.current = setTimeout(() => {
+                                setHoveredCategory(null);
+                              }, 150);
+                            }}
+                          />
+                          <div
+                            className="absolute left-full bg-white rounded-lg z-50 px-2 py-3 category-overlay min-w-[200px]"
+                            style={{
+                              top: "0px",
+                              height: categoryMenuRef.current
+                                ? `${categoryMenuRef.current.offsetHeight}px`
+                                : "100%",
+                            }}
+                            onMouseEnter={() => {
+                              if (timeoutRef.current) {
+                                clearTimeout(timeoutRef.current);
+                                timeoutRef.current = null;
+                              }
+                              setHoveredCategory(hoveredCategory);
+                            }}
+                            onMouseLeave={() => {
+                              timeoutRef.current = setTimeout(() => {
+                                setHoveredCategory(null);
+                              }, 150);
+                            }}
+                          >
+                            <div className="flex flex-col gap-2 h-full overflow-y-auto">
+                              {parentCategories
+                                .find((c) => c.id === hoveredCategory)
+                                ?.categories?.map((category) => (
+                                  <NextLink
+                                    key={category.id}
+                                    href={`/category/${hoveredCategory}/sub/${category.id}`}
+                                    className="flex items-center px-3 py-2 text-base text-neutral-100 font-medium hover:bg-primary-100 hover:text-primary rounded transition-colors min-w-0"
+                                  >
+                                    <span className="truncate">
+                                      {category.name}
+                                    </span>
+                                  </NextLink>
+                                ))}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                  </div>
                 </div>
               </PopoverContent>
             </Popover>

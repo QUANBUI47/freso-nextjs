@@ -56,6 +56,12 @@ export const apiEndpoints = {
     base: getApiUrl(apiConfig.profileService),
     get: () => getApiUrl(apiConfig.profileService),
     update: () => getApiUrl(apiConfig.profileService),
+    certificates: () =>
+      `${apiConfig.apiUrl}${apiConfig.profileService}/api/v1/home/certificates`,
+    suppliers: () =>
+      `${apiConfig.apiUrl}${apiConfig.profileService}/api/v1/home/prominent-sellers`,
+    adminSettings: () =>
+      `${apiConfig.apiUrl}${apiConfig.profileService}/api/v1/admin/admin-settings`,
   },
 
   // Order endpoints
@@ -77,10 +83,14 @@ export const apiEndpoints = {
     list: () => getApiUrl(apiConfig.productCatalogService),
     detail: (id: string | number) =>
       getApiUrl(apiConfig.productCatalogService, `/${id}`),
+    catalogs: () =>
+      `${apiConfig.apiUrl}${apiConfig.productCatalogService}/api/v1/catalogs`,
     hotProducts: () =>
       `${apiConfig.apiUrl}${apiConfig.productCatalogService}/api/v1/hot-products-sellers`,
     newProducts: () =>
       `${apiConfig.apiUrl}${apiConfig.productCatalogService}/api/v1/new-products-sellers`,
+    categories: () =>
+      `${apiConfig.apiUrl}${apiConfig.productCatalogService}/api/v1/parent-categories`,
   },
 
   // Logistics endpoints

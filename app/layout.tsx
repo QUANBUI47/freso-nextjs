@@ -9,6 +9,8 @@ import { siteConfig } from "@/config/site";
 import { fontDisplay, fontText } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import BannerDown from "@/components/home/banner-down/BannerDown";
+import Certificate from "@/components/home/certificate/Certificate";
 
 export const metadata: Metadata = {
   title: {
@@ -50,9 +52,11 @@ export default function RootLayout({
             }}
           >
             <Navbar />
-            <main className="container mx-auto pt-6 pb-[120px] px-6 flex-grow max-w-[1200px]">
+            <main className="container mx-auto py-6 px-6 flex-grow max-w-[1200px]">
               {children}
             </main>
+            <BannerDown />
+            <Certificate />
             <Footer />
           </div>
         </Providers>
